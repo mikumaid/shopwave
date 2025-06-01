@@ -1,0 +1,25 @@
+name: shopwave
+
+services:
+  shopwave:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: shopwave:latest
+    container_name: shopwave
+    restart: unless-stopped
+    expose:
+      - 5000
+    labels:
+      caddy: shopwave.antakara.xyz
+      caddy.import: "tls-antakara"
+      caddy.reverse_proxy: "{{upstreams http 5000}}"
+      caddy.reverse_proxy.import: cloudflare
+      caddy.log.output: "/data/logs/debug.log"
+    networks:
+      - proxy
+    
+networks:
+  proxy:
+    name: proxy
+    external: true
