@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}Shopwave - Seller Dashboard{% endblock %}
+{% block content %}
+  <!-- Individual product page -->
+  <div class="container w-75 mt-5">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="row g-2">
+          <div class="col-2 d-flex flex-column align-items-center gap-2">
+            {% for image in product.Images %}
+              <img src="{{ url_for('static', filename='product_images/' + image) }}" class="img-thumbnail" alt="Product Image" style="height: 50px; object-fit: cover;">
+            {% endfor %}
+          </div>
+          <div class="col-10">
+            <img src="" class="img-fluid" alt="Product Image" id="main-product-image" style="min-height: 300px; object-fit: contain;">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h5>{{ product.name }}</h5>
+        <p class="lead bold">
+          <div class="d-flex align-items-center gap-1">
+            <span class="badge bg-success">4.5</span>
+            <span class="text-muted">(100 reviews)</span>
+          </div>
+          <strong class="fs-3">Rp {{ "{:,.2f}".format(product.price) }}</strong>
+        </p>
+        <div>{{ product.detail|safe }}</div>
+      </div>
+      <div class="col-md-3">
+        <div class="border border-secondary rounded p-1">
+          <h4 class="text-center">Jumlah</h4>
+          <form>
+            <input type="number" class="form-control" placeholder="Jumlah Pesanan" value="1" min="1">
+            <div class="mt-3">
+              <button class="btn btn-success w-100">+ Keranjang</button>
+              <button class="btn btn-outline-success w-100 mt-2">Beli Sekarang</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <h2>Detail:</h2>
+          <div>{{ product.description|safe }}</div>
+        </div>
+      </div>
+    </div>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      // Set the main product image to the first image in the list
+      const mainImage = document.getElementById('main-product-image');
+      const firstImage = document.querySelector('.col-2 img');
+      if (firstImage) {
+        mainImage.src = firstImage.src;
+      }
+
+      // Add click event to thumbnail images to change the main image
+      const thumbnails = document.querySelectorAll('.col-2 img');
+      thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+          mainImage.src = this.src;
+        });
+      });
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="container mt-3">
+    <div class="row row-cols-1 row-cols-md-5 gap-3 align-items-center justify-content-center">
+      <!-- Loop through products -->
+      {% for product in products %}
+      <a class="card border-1 p-0" href="{{ url_for('get_product', product_id=product.id) }}" style="text-decoration: none; color: inherit;">
+        <div class="container-fluid h-100 d-flex justify-content-center align-items-center p-0">
+          <img src="{{ url_for('static', filename='product_images/' + product.Images[0]) }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit:contain;">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title text-nowrap text-info" style="overflow:hidden; text-overflow: ellipsis;">{{ product.name }}</h5>
+          <p class="card-text text-nowrap" style="overflow:hidden; text-overflow: ellipsis;">{{ product.description|safe }}</p>
+          <p class="card-text"><strong>Rp {{ "{:,.2f}".format(product.price) }}</strong></p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Add Product Page -->
+<div class="container mt-5">
+  <!-- preview product card -->
+  <a href="{{ url_for('seller_dashboard') }}" class="btn btn-outline-secondary mx-auto mb-3">
+    <span class="bi bi-arrow-left"></span> Back to Products
+  </a>
+  <!-- Product details card -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title text-center">{{ product.name }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="card-text text-center">
+            {% for image in product.Images %}
+            <img src="{{ url_for('static', filename='product_images/' + image) }}" alt="{{ product.name }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+            {% endfor %}
+          </div><hr>
+          <p class="card-text"><strong>Description</strong><br> {{ product.description|safe }}</p>
+          <p class="card-text"><strong>Details</strong><br> {{ product.detail|safe }}</p>
+        </div>
+        <div class="card-footer text-end">
+          <h5 class="text-success">Rp {{ "{:,.2f}".format(product.price) }}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Edit Product</h5>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('edit_product', product_id=product.id) }}" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="form-group mb-3">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder="Enter product name") }}
+            {% if form.name.errors %}
+            <div class="text-danger">{{ form.name.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="form-group mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control summernote", placeholder="Enter product description") }}
+            {% if form.description.errors %}
+            <div class="text-danger">{{ form.description.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="form-group mb-3">
+            {{ form.detail.label(class="form-label") }}
+            {{ form.detail(class="form-control summernote", placeholder="Enter product details") }}
+            {% if form.detail.errors %}
+            <div class="text-danger">{{ form.detail.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="form-group mb-3">
+            {{ form.price.label(class="form-label") }}
+            {{ form.price(class="form-control", placeholder="Enter product price") }}
+            {% if form.price.errors %}
+            <div class="text-danger">{{ form.price.errors[0] }}</div>
+            {% endif %}
+          </div>
+          <!-- Multiple field file upload for image -->
+          <div class="form-group mb-3">
+            {{ form.images.label(class="form-label") }}
+            {{ form.images(class="form-control", multiple=True) }}
+            {% if form.images.errors %}
+            {% for error in form.images.errors %}
+            <span class="text-danger">{{ error }}</span><br>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div class="form-group mb-3">
+            {{ form.submit(class="btn btn-outline-primary w-100") }}
+          </div>
+        </form>
+        </div>
+      </div>
+  </div>
+  {% if error %}
+  <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+  {% if success %}
+  <div class="alert alert-success mt-3">{{ success }}</div>
+  {% endif %}
+</div>
+<script>
+  $(document).ready(function() {
+    $('.summernote').summernote({
+      toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']]
+      ]
+    });
+  });
+</script>
+{% endblock content %}

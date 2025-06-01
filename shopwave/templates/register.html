@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Register form -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center mb-4">Register</h2>
+      <form method="POST" action="/register">
+        {{ form.hidden_tag() }}
+        <div class="form-group mb-3">
+          {{ form.username.label(class="form-label") }}
+          {{ form.username(class="form-control", placeholder="Enter username") }}
+          {% if form.username.errors %}
+          <div class="text-danger">{{ form.username.errors[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="form-group mb-3">
+          {{ form.email.label(class="form-label") }}
+          {{ form.email(class="form-control", placeholder="Enter email") }}
+          {% if form.email.errors %}
+          <div class="text-danger">{{ form.email.errors[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="form-group mb-3">
+          {{ form.password.label(class="form-label") }}
+          {{ form.password(class="form-control", placeholder="Enter password") }}
+          {% if form.password.errors %}
+          <div class="text-danger">{{ form.password.errors[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="form-group mb-3">
+          {{ form.confirm_password.label(class="form-label") }}
+          {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+          {% if form.confirm_password.errors %}
+          <div class="text-danger">{{ form.confirm_password.errors[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="form-group mb-3">
+          {{ form.admin_key.label(class="form-label") }}
+          {{ form.admin_key(class="form-control", placeholder="Call admin to acquire admin key for seller") }}
+          {% if form.admin_key.errors %}
+          <div class="text-danger">{{ form.admin_key.errors[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="form-group mb-3">
+          {{ form.submit(class="btn btn-outline-primary w-100") }}
+        </div>
+        <div class="form-group text-center">
+          <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+      </form>
+      {% if error %}
+      <div class="alert alert-danger mt-3">{{ error }}</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- End of Register form -->
+{% endblock content %}
